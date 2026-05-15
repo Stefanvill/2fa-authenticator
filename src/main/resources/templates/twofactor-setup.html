@@ -1,10 +1,62 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>2FA Setup</title>
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 720px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        code {
+            word-break: break-all;
+        }
+
+        .actions {
+            margin-top: 1rem;
+        }
+
+        a.button, button {
+            padding: 0.6rem 1rem;
+            border-radius: 6px;
+            border: 1px solid #444;
+            background: #fff;
+            cursor: pointer;
+            text-decoration: none;
+            color: #111;
+        }
+    </style>
 </head>
 <body>
-$END$
+<h1>Set up Two-Factor Authentication</h1>
+
+<div class="card">
+    <p><strong>User:</strong> <span th:text="${user.username}">username</span></p>
+
+    <p>Scan this QR with your authenticator app (Google Authenticator, Authy, etc.):</p>
+    <img
+            alt="2FA QR code"
+            th:src="'https://quickchart.io/qr?size=220&text=' + ${#uris.escapeQueryParam(qrUri)}"
+    />
+
+
+    <p>If you cannot scan, add this secret manually:</p>
+    <code th:text="${user.twoFactorSecret}">SECRET</code>
+</div>
+
+<div class="actions">
+    <a class="button" th:href="@{/2fa/verify/{userId}(userId=${user.id})}">Continue to verification</a>
+</div>
 </body>
 </html>

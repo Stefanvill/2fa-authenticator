@@ -1,10 +1,61 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Verify 2FA Code</title>
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 480px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        .error {
+            color: #b00020;
+            margin-bottom: 1rem;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 0.6rem;
+            margin: 0.5rem 0 1rem;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 0.6rem 1rem;
+            border-radius: 6px;
+            border: 1px solid #444;
+            background: #fff;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-$END$
+<h1>Two-Factor Verification</h1>
+
+<div class="card">
+    <p class="error" th:if="${error}" th:text="${error}">Invalid authentication code</p>
+
+    <form method="post" th:action="@{/2fa/verify}">
+        <input name="userId" th:value="${userId}" type="hidden"/>
+
+        <!-- CSRF (works when Spring Security is active) -->
+        <input th:name="${_csrf.parameterName}" th:value="${_csrf.token}" type="hidden"/>
+
+        <label for="code">6-digit code</label>
+        <input id="code" inputmode="numeric" maxlength="6" name="code" pattern="[0-9]{6}" required type="text"/>
+
+        <button type="submit">Verify</button>
+    </form>
+</div>
 </body>
 </html>
