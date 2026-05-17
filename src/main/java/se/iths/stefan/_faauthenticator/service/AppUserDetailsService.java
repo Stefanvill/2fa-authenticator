@@ -27,7 +27,7 @@ public class AppUserDetailsService implements UserDetailsService {
                 : appUser.getRole();
 
         return User.withUsername(appUser.getUsername())
-                .password(appUser.getPassword()) // already BCrypt encoded
+                .password(appUser.getPassword())
                 .authorities(authority)
                 .build();
     }
